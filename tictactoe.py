@@ -1,16 +1,14 @@
 class MainClass:
-    print("Enter cells: ")
+    # print("Enter cells: ")
 
-    inp = list(input())
+    inp = ["_", "_", "_", "_", "_", "_", "_", "_", "_"]
     sub_list1 = inp[0:3]
     sub_list2 = inp[3:6]
     sub_list3 = inp[6:9]
 
     my_matrix = [sub_list3, sub_list2, sub_list1]
 
-    xes = inp.count('X')
-    oes = inp.count('O')
-    _es = inp.count('_')
+    player_round = 1
 
     def matrix(self):
         print("---------")
@@ -26,35 +24,64 @@ class MainClass:
 
     def check_win(self):
         possible_win_states = [
+            # # X WINS
             # vertical
-            self.sub_list1[0] == self.sub_list2[0] == self.sub_list3[0],  # placement == 0
-            self.sub_list1[1] == self.sub_list2[1] == self.sub_list3[1],  # placement == 1
-            self.sub_list1[2] == self.sub_list2[2] == self.sub_list3[2],  # placement == 2
+            self.sub_list1[0] == self.sub_list2[0] == self.sub_list3[0] == "X",  # placement == 0
+            self.sub_list1[1] == self.sub_list2[1] == self.sub_list3[1] == "X",  # placement == 1
+            self.sub_list1[2] == self.sub_list2[2] == self.sub_list3[2] == "X",  # placement == 2
 
             # horizontal
-            self.sub_list1[0] == self.sub_list1[1] == self.sub_list1[2],  # placement == 3
-            self.sub_list2[0] == self.sub_list2[1] == self.sub_list2[2],  # placement == 4
-            self.sub_list3[0] == self.sub_list3[1] == self.sub_list3[2],  # placement == 5
+            self.sub_list1[0] == self.sub_list1[1] == self.sub_list1[2] == "X",  # placement == 3
+            self.sub_list2[0] == self.sub_list2[1] == self.sub_list2[2] == "X",  # placement == 4
+            self.sub_list3[0] == self.sub_list3[1] == self.sub_list3[2] == "X",  # placement == 5
 
             # diagonal
-            self.sub_list1[0] == self.sub_list2[1] == self.sub_list3[2],  # placement == 6
-            self.sub_list1[2] == self.sub_list2[1] == self.sub_list3[0]  # placement == 7
-        ]
+            self.sub_list1[0] == self.sub_list2[1] == self.sub_list3[2] == "X",  # placement == 6
+            self.sub_list1[2] == self.sub_list2[1] == self.sub_list3[0] == "X",  # placement == 7
 
-        if abs(self.xes - self.oes) > 1:
+            # # O WINS
+            # vertical
+            self.sub_list1[0] == self.sub_list2[0] == self.sub_list3[0] == "O",  # placement == 8
+            self.sub_list1[1] == self.sub_list2[1] == self.sub_list3[1] == "O",  # placement == 9
+            self.sub_list1[2] == self.sub_list2[2] == self.sub_list3[2] == "O",  # placement == 10
+
+            # horizontal
+            self.sub_list1[0] == self.sub_list1[1] == self.sub_list1[2] == "O",  # placement == 11
+            self.sub_list2[0] == self.sub_list2[1] == self.sub_list2[2] == "O",  # placement == 12
+            self.sub_list3[0] == self.sub_list3[1] == self.sub_list3[2] == "O",  # placement == 13
+
+            # diagonal
+            self.sub_list1[0] == self.sub_list2[1] == self.sub_list3[2] == "O",  # placement == 14
+            self.sub_list1[2] == self.sub_list2[1] == self.sub_list3[0] == "O"  # placement == 15
+        ]
+        xes_1 = self.my_matrix[0].count("X")
+        xes_2 = self.my_matrix[1].count("X")
+        xes_3 = self.my_matrix[2].count("X")
+
+        oes_1 = self.my_matrix[0].count("O")
+        oes_2 = self.my_matrix[1].count("O")
+        oes_3 = self.my_matrix[2].count("O")
+
+        _es_1 = self.my_matrix[0].count("_")
+        _es_2 = self.my_matrix[1].count("_")
+        _es_3 = self.my_matrix[2].count("_")
+
+        xes = xes_1 + xes_2 + xes_3
+        oes = oes_1 + oes_2 + oes_3
+        _es = _es_1 + _es_2 + _es_3
+
+        if abs(xes - oes) > 1:
             print("Impossible")
         else:
             count = 0
             for i in range(len(possible_win_states)):
-                if self._es > 0:
-                    count = 0
-                elif possible_win_states[i]:
+                if possible_win_states[i]:
                     count += 1
 
             if count > 1:
                 print("Impossible")
             elif count == 0:
-                if self._es > 0:
+                if _es > 0:
                     print("Enter the coordinates: ")
                     self.check_soln()
 
@@ -62,25 +89,13 @@ class MainClass:
                     print("Draw")
             elif count == 1:
                 for i in range(len(possible_win_states)):
-                    if possible_win_states[i] is True:
+                    if possible_win_states[i]:
                         placement = i
                         print()
-                        if placement == 0:
-                            print(self.sub_list1[0] + ' wins')
-                        if placement == 1:
-                            print(self.sub_list1[1] + ' wins')
-                        if placement == 2:
-                            print(self.sub_list1[2] + ' wins')
-                        if placement == 3:
-                            print(self.sub_list1[0] + ' wins')
-                        if placement == 4:
-                            print(self.sub_list2[0] + ' wins')
-                        if placement == 5:
-                            print(self.sub_list3[0] + ' wins')
-                        if placement == 6:
-                            print(self.sub_list1[0] + ' wins')
-                        if placement == 7:
-                            print(self.sub_list1[2] + ' wins')
+                        if placement in range(8):
+                            print("X wins")
+                        elif placement in range(8, 16):
+                            print("O wins")
 
     def check_soln(self):
         coord = input()
@@ -89,6 +104,7 @@ class MainClass:
             print("You should enter numbers!")
             print("Enter the coordinates: ")
             self.check_soln()
+            self.check_win()
 
         elif not coord_string[1].isdigit():
             print("You should enter numbers!")
@@ -114,9 +130,18 @@ class MainClass:
             user_selection = self.my_matrix[coord_x][coord_y]
 
             if user_selection == "_":
-                self.my_matrix[coord_x][coord_y] = "X"
+                if self.player_round % 2 == 1:
+                    self.my_matrix[coord_x][coord_y] = "X"
 
-                self.matrix()
+                    self.matrix()
+                    self.player_round += 1
+                    self.check_win()
+
+                elif self.player_round % 2 == 0:
+                    self.my_matrix[coord_x][coord_y] = "O"
+                    self.matrix()
+                    self.player_round += 1
+                    self.check_win()
 
             else:
                 if user_selection != "_":
